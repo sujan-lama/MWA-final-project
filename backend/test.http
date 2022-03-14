@@ -1,0 +1,27 @@
+### signup
+POST  http://localhost:3000/api/users/signup
+Content-Type: application/json
+
+{
+    "email":"sujan@gmail.com",
+    "password":"password",
+    "name":"Sujan Lama",
+    "role":"Admin"
+}
+
+### login
+POST http://localhost:3000/api/users/login
+Content-Type: application/json
+
+{
+    "email":"sujan@gmail.com",
+    "password":"password"
+}
+
+### check email address unique
+GET http://localhost:3000/api/users/verify/sujan2@gmail.com
+
+
+### get protected
+GET http://localhost:3000/api/protected
+Authorization: Bearer //put jwt token after login

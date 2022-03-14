@@ -1,0 +1,136 @@
+<body>
+  <div class="signup-form">
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <h2>Sign Up</h2>
+      <p>Please fill in this form to create an account!</p>
+      <hr />
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <span class="fa fa-user"></span>
+            </span>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            placeholder="Name"
+            required="required"
+            formControlName="name"
+          />
+        </div>
+        <div
+          style="color: red"
+          *ngIf="
+            !signupForm.get('name')?.valid &&
+            (signupForm.controls['name'].dirty ||
+              signupForm.controls['name'].touched)
+          "
+        >
+          <small *ngIf="signupForm.get('name')?.hasError('required')"
+            >This field is required</small
+          >
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-paper-plane"></i>
+            </span>
+          </div>
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            placeholder="Email Address"
+            required="required"
+            formControlName="email"
+          />
+        </div>
+        <div
+          style="color: red"
+          *ngIf="
+            !signupForm.get('email')?.valid &&
+            (signupForm.controls['email'].dirty ||
+              signupForm.controls['email'].touched)
+          "
+        >
+          <small
+            *ngIf="
+              signupForm.get('email')?.hasError('required');
+              else firstCondition
+            "
+            >This field is required</small
+          >
+          <ng-template #firstCondition>
+            <small
+              *ngIf="
+                signupForm.get('email')?.hasError('pattern');
+                else secondCondition
+              "
+              >Email is invalid</small
+            >
+          </ng-template>
+
+          <ng-template #secondCondition>
+            <small *ngIf="signupForm.get('email')?.hasError('unique')"
+              >Email Already Exists</small
+            >
+          </ng-template>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class="fa fa-lock"></i>
+            </span>
+          </div>
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            placeholder="Password"
+            required="required"
+            formControlName="password"
+          />
+        </div>
+        <div
+          style="color: red"
+          *ngIf="
+            !signupForm.get('password')?.valid &&
+            (signupForm.controls['password'].dirty ||
+              signupForm.controls['password'].touched)
+          "
+        >
+          <small *ngIf="signupForm.get('password')?.hasError('required')"
+            >This field is required</small
+          >
+          <small *ngIf="signupForm.get('password')?.hasError('minlength')"
+            >Password should be of minimum length 6</small
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg"
+          [disabled]="!signupForm.valid"
+        >
+          Sign Up
+        </button>
+      </div>
+    </form>
+
+    <div
+      class="text-center"
+      [routerLink]="['/login']"
+      routerLinkActive="router-link-active"
+    >
+      Already have an account? <a>Login here</a>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,69 @@
+<body>
+  <div class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form>
+      <h2 class="text-center">Log in</h2>
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Email"
+          required="required"
+          formControlName="email"
+        />
+        <div
+          style="color: red"
+          *ngIf="
+            !loginForm.get('email')?.valid &&
+            (loginForm.controls['email'].dirty ||
+              loginForm.controls['email'].touched)
+          "
+        >
+          <small
+            *ngIf="loginForm.get('email')?.hasError('required'); else condition"
+            >This field is required</small
+          >
+          <ng-template #condition>
+            <small
+              *ngIf="
+                loginForm.get('email')?.hasError('pattern');
+                else condition
+              "
+              >Email is not valid</small
+            >
+          </ng-template>
+        </div>
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Password"
+          required="required"
+          formControlName="password"
+        />
+        <div
+          style="color: red"
+          *ngIf="
+            !loginForm.get('password')?.valid &&
+            (loginForm.controls['password'].dirty ||
+              loginForm.controls['password'].touched)
+          "
+        >
+          <small *ngIf="loginForm.get('password')?.hasError('required')"
+            >This field is required</small
+          >
+        </div>
+      </div>
+      <div class="form-group">
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="!loginForm.valid"
+        >
+          Log in
+        </button>
+      </div>
+    </form>
+    <p class="text-center"><a [routerLink]="['/signup']" routerLinkActive="router-link-active" >Create an Account</a></p>
+  </div>
+</body>
