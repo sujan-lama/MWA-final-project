@@ -12,11 +12,11 @@ const app = express();
 //config
 app.set('port', process.env.PORT || 3000);
 app.use(cors());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
-const mongoDB = 'mongodb://172.31.192.1/homework13';
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+const mongoDB = process.env.MONGODB_URL;
+mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //Get the default connection
 const db = mongoose.connection;
@@ -36,7 +36,7 @@ app.all('*', (req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-    return res.status(400).json({ success: false, message: err.message });
+    return res.status(400).json({success: false, message: err.message});
 });
 
 // Boot up
