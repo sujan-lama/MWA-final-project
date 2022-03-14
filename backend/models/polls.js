@@ -15,7 +15,7 @@ const pollSchema = new Schema({
     start_date: Date,
     end_date: Date,
     target_date: Date,
-    foods: [FoodWithVoteSchema]
+    foods : [FoodWithVoteSchema]
 })
 
-module.exports = { "Polls": mongoose.model("Polls", pollSchema) };
+module.exports = {"Polls": mongoose.model("Polls", pollSchema)};
