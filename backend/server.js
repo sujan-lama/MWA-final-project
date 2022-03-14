@@ -1,9 +1,14 @@
-// dependencies
+// dependencies - publics
 const express = require('express');
-const usersRoutes = require('./routes/usersRoutes');
-const protectedRoutes = require('./routes/protectedRoutes');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
+// Custom modules
+const usersRoutes = require('./routes/usersRoutes');
+const protectedRoutes = require('./routes/protectedRoutes');
+const pollsRoutes = require('./routes/pollsRoutes');
+const authenticationMW = require('../middlewares/authenticationMW');
+
 require('dotenv').config();
 
 // instantiations
@@ -15,8 +20,8 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const mongoDB = 'mongodb://172.31.192.1/homework13';
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+const mongoDB = 'mongodb://localhost:/project';
+mongoose.connect(process.env.HOST || mongoDB, { useNewUrlParser: true, useUnifiedTopology: true});
 
 //Get the default connection
 const db = mongoose.connection;
@@ -26,8 +31,18 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 //routes
 app.use('/api/users', usersRoutes);
-app.use('/api/protected', protectedRoutes);
+app.use('/api/protected', authenticationMW, protectedRoutes);
+app.use('/api/polls',authenticationMW,  pollsRoutes);
 
+// app.get("/", (req, res , next)=>{
+//        const newPoll = new PollsModel({
+//            _id: ObjectId(),
+//            title: "Test Poll",
+//            start_date: new Date();
+//            end_date: new Date();
+//            target_date: new Date();
+//        })
+// })
 
 app.all('*', (req, res, next) => {
     res.status(404);

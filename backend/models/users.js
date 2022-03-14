@@ -10,4 +10,4 @@ const schema = new Schema({
     role:String
 });
 
-module.exports = mongoose.model("Users", schema);
+module.exports = {"Users": mongoose.model("Users", schema), "UserSchema" : schema};
