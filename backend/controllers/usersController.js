@@ -2,6 +2,7 @@ const Users = require("../models/users");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const responseData = require('../response/response');
+const fs = require("fs");
 const saltRounds = 10;
 
 async function login(req, res) {
@@ -25,8 +26,13 @@ async function login(req, res) {
         }
 
         //login successful
-        const accessToken = jwt.sign({ id: user.id, email: user.email, password: user.password, role: user.role }, process.env.TOKEN_SECRET);
-        const data = { id: user.id, email: user.email, name: user.name, token: accessToken };
+        const accessToken = jwt.sign({
+            id: user.id,
+            email: user.email,
+            password: user.password,
+            role: user.role
+        }, process.env.TOKEN_SECRET);
+        const data = { id: user.id, email: user.email, name: user.name, token: accessToken, role: user.role };
         return res.json(responseData("Login successful", data));
     } catch (error) {
         console.log(error);
@@ -37,21 +43,12 @@ async function login(req, res) {
 
 async function signup(req, res) {
     try {
-        const { email, password, name, role } = req.body;
-        const salt = await bcrypt.genSalt(saltRounds);
-        const encryptedPassword = await bcrypt.hash(password, salt);
-
+        const { email } = req.body;
         const isEmailUnique = await checkEmailAddressUnique(email);
         if (!isEmailUnique) {
             return res.status(401).json(responseData("Email already exists"));
         }
-
-        // generate new id
-        const id = Math.floor(new Date().getTime() / 1000).toString();
-        let userData = { _id: id, email: email, password: encryptedPassword, name: name, role: role };
-        const user = new Users(userData);
-        await user.save();
-        delete userData.password;
+        const userData = await saveUser(req.body);
         return res.json(responseData("Signup successful", userData))
 
     } catch (error) {
@@ -61,6 +58,37 @@ async function signup(req, res) {
 
 }
 
+async function saveUser(body) {
+    const { email, password, name, role } = body;
+
+    const salt = await bcrypt.genSalt(saltRounds);
+    const encryptedPassword = await bcrypt.hash(password, salt);
+
+    // generate new id
+    const id = Date.now();
+    let userData = { _id: id, email: email, password: encryptedPassword, name: name, role: role };
+    const user = new Users(userData);
+    await user.save();
+    delete userData.password;
+    return userData;
+}
+
+async function generateUser() {
+    fs.readFile('./default_users.json', 'utf-8', async (err, data) => {
+        if (err) {
+            console.log("Failed to generate default users");
+            return;
+        }
+        const users = JSON.parse(data);
+        for (const user of users) {
+            const isUnique = await checkEmailAddressUnique(user.email);
+            if (isUnique) {
+                await saveUser(user);
+            }
+        }
+        console.log("Default users successfully generated");
+    });
+}
 
 async function verifyEmail(req, res) {
     const email = req.params.email;
@@ -79,4 +107,4 @@ async function checkEmailAddressUnique(email) {
 }
 
 
-module.exports = { login, signup, verifyEmail };
+module.exports = { login, signup, verifyEmail, generateUser };

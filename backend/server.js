@@ -5,18 +5,18 @@ const protectedRoutes = require('./routes/protectedRoutes');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-
+const { generateUser } = require('./controllers/usersController');
 // instantiations
 const app = express();
 
 //config
 app.set('port', process.env.PORT || 3000);
 app.use(cors());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 const mongoDB = process.env.MONGODB_URL;
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //Get the default connection
 const db = mongoose.connection;
@@ -36,9 +36,13 @@ app.all('*', (req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-    return res.status(400).json({success: false, message: err.message});
+    return res.status(400).json({ success: false, message: err.message });
 });
 
 // Boot up
 const port = app.get('port');
-app.listen(port, 'localhost', () => console.log(`Listening on port ${port}`));
+app.listen(port, 'localhost', async () => {
+    console.log(`Listening on port ${port}`);
+    console.log('generating default users');
+    await generateUser();
+});

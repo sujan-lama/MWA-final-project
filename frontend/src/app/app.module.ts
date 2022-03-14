@@ -33,10 +33,10 @@ import { ToastrModule } from 'ngx-toastr';
           ),
       },
       {
-        path: 'protected',
+        path: 'admin-home',
         loadChildren: () =>
-          import('./modules/protected/protected.module').then(
-            (module) => module.ProtectedModule
+          import('./modules/admin-home/admin-home.module').then(
+            (module) => module.AdminHomeModule
           ),
         canActivate: [IsLoggedInGuard],
       },

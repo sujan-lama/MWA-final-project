@@ -7,7 +7,7 @@ import {UserService} from '../../services/user.service';
 import {ToastrService} from 'ngx-toastr';
 
 @Component({
-  selector: 'app-protected',
+  selector: 'app-admin-home',
   template: `
     <div style="padding:16px">
       <p>protected works!</p>
@@ -16,7 +16,7 @@ import {ToastrService} from 'ngx-toastr';
   `,
   styles: [],
 })
-export class ProtectedComponent implements OnInit {
+export class AdminHomeComponent implements OnInit {
   data: string = '';
 
   constructor(

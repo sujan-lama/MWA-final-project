@@ -16,13 +16,13 @@ export class RoutingService {
       this.router.navigate(['/login']);
       return;
     }
-    switch(user.role){
+    switch (user.role) {
       case "ADMIN":
-        this.router.navigate(['/protected']);
+        this.router.navigate(['/admin-home']);
         break;
       case "USER":
-          this.router.navigate(['/users']);
-          break;
+        this.router.navigate(['/users']);
+        break;
       default:
         this.router.navigate(['/users']);
     }
