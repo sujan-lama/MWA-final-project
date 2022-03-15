@@ -18,13 +18,13 @@ export class RoutingService {
     }
     switch (user.role) {
       case "ADMIN":
-        this.router.navigate(['/admin-home']);
+        this.router.navigate(['/admin']);
         break;
       case "USER":
-        this.router.navigate(['/users']);
+        this.router.navigate(['/home']);
         break;
       default:
-        this.router.navigate(['/users']);
+        this.router.navigate(['/home']);
     }
   }
 }

@@ -6,7 +6,7 @@ import {ColDef, GridReadyEvent, Module, RowClickedEvent,} from '@ag-grid-communi
 import Response from "../../models/response";
 import {map, mergeMap, Observable, of, Subscription} from "rxjs";
 import {MatDialog} from '@angular/material/dialog';
-import {AddUserComponent} from "../add-user/add-user.component";
+import {AddUserComponent} from "../../modules/add-user/add-user.component";
 import User from "../../models/users";
 import {UserdialogComponent} from "../../custom-dialog/userdialog/userdialog.component";
 
@@ -60,6 +60,7 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    console.log('admin home component')
   }
 
   addUser() {

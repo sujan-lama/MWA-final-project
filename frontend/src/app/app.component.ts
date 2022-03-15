@@ -8,7 +8,6 @@ import { Router } from "@angular/router";
   template: `
     <div class="nav">
       <ul>
-        <li><a [routerLink]="['/', 'home']">Home</a></li>
         <li *ngIf="!isLoggedIn" style="float:right"><a [routerLink]="['/', 'login']">Login</a></li>
         <li *ngIf="isLoggedIn" style="float:right">
           <a (click)="logout()" [routerLink]="['/', 'login']">Logout</a>

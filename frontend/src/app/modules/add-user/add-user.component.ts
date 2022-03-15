@@ -49,7 +49,7 @@ export class AddUserComponent implements OnInit {
         if (v.success) {
           this.toastr.success(v.message);
           this.adduserForm.reset();
-          this.router.navigate(['/admin-home']);
+          this.router.navigate(['/admin']);
           return;
         }
 

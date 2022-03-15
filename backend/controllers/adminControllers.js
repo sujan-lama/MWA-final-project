@@ -1,5 +1,5 @@
 const responseData = require('../dtos/response');
-const Users = require('../models/users');
+const {Users} = require('../models/users');
 const { saveUser, checkEmailAddressUnique } = require('./sharedControllers');
 
 async function getUsers(req, res) {
