@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PollService} from "../../services/poll.service";
 import {map} from "rxjs";
 import Response from "../../models/response";
 import * as moment from "moment";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-poll',
@@ -22,18 +23,16 @@ export class PollComponent implements OnInit {
     foodItems: this.fb.array([])
   }, {validators: this.pollDateValidator});
 
-  public categories = [{name: 'Breakfast'}, {name: 'Lunch'}, {name: 'Dinner'}, {name: 'Brunch'}];
+  public categories = ['Breakfast', 'Lunch', 'Dinner', 'Brunch'];
   public foodItems = [];
   todayWithTime: string = moment().format("YYYY-MM-DDThh:mm:ss");                          // 2022-03-15T17:39:55-05:00
   tomorrowWithTime: string = moment().add(1, "days").format("YYYY-MM-DDThh:mm:ss");                          // 2022-03-15T17:39:55-05:00
   tomorrow: string = moment().add(1, "days").format('YYYY-MM-DD');
 
-  constructor(private fb: FormBuilder, private router: Router, private service: PollService) {
-    console.log(this.todayWithTime)
+  constructor(private fb: FormBuilder, private router: Router, private service: PollService, private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
-    console.log(this.form.get('title')?.valid);
   }
 
   addPole() {
@@ -42,11 +41,29 @@ export class PollComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this.service.createPoll(this.form.value).subscribe(res => {
-      this.goBack();
-    }, (err) => {
-
-    });
+    this.toastr.clear();
+    const foodItemsList = this.form.controls['foodItems'].value;
+    if (foodItemsList.length < 2) {
+      this.toastr.error("Please add more than one food items");
+      return;
+    }
+    const poll = this.form.value;
+    const body = {
+      title: poll.title,
+      start_date: poll.startDateTime,
+      end_date: poll.endDateTime,
+      targeted_date: poll.targetedDate,
+      category: poll.category,
+      foods: poll.foodItems
+    }
+    console.log(body)
+    this.service.createPoll(body).pipe(map(v => v as Response))
+      .subscribe(res => {
+        this.toastr.clear();
+        this.toastr.success(res.message);
+      }, (err) => {
+        this.toastr.error(err.error.message)
+      });
 
   }
 
@@ -54,13 +71,26 @@ export class PollComponent implements OnInit {
     return this.form.get(key);
   }
 
-  onSelected(itm: any) {
-    this.service.getFoodFromCategory(itm.name).pipe(
+  onSelectedCategories(itm: any) {
+    this.service.getFoodFromCategory(itm).pipe(
       map(v => v as Response),
     ).subscribe(v => {
       this.foodItems = v.data;
     });
+
+  }
+
+
+  onSelectedFood(itm: any) {
     this.form.controls['foodItems'].markAsTouched();
+    if (!itm) {
+      return;
+    }
+    let newArr: FormControl[] = [];
+    itm.forEach((element: any) => {
+      newArr.push(element);
+    });
+    this.form.setControl('foodItems', this.fb.array(newArr));
   }
 
   createItem(val: string) {

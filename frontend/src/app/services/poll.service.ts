@@ -11,7 +11,7 @@ export class PollService {
   }
 
   createPoll(value: {}): Observable<any> {
-    return this.http.post('http://localhost:3000/api/poll', value);
+    return this.http.post('http://localhost:3000/api/polls', value);
   }
 
   getFoodFromCategory(category: string) {

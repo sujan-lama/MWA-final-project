@@ -46,6 +46,7 @@ Content-Type: application/json
   "start_date": "2022-03-18T08:02:17-05:00",
   "end_date":   "2022-03-21T16:34:27-05:00",
   "target_date": "2022-03-23T16:34:27-05:00",
+  "category":"Lunch",
   "foods": [
     {
       "foodItem": {
@@ -82,8 +83,7 @@ Content-Type: application/json
 }
 
 ### GET poll by Id
-GET http://localhost:3000/api/polls/6230b76ee3b889ee669b7b44
-
+GET http://localhost:3000/api/polls
 ### Vote for a food
 PUT http://localhost:3000/api/polls/622feb4b8d813d8b44888c38
 Content-Type: application/json

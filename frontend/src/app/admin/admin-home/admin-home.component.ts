@@ -57,7 +57,6 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    console.log('admin home component')
   }
 
   addUser() {
