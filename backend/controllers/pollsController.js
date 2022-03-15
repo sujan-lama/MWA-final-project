@@ -8,18 +8,18 @@ const mongoose = require('mongoose');
 
 const findAll = (req, res) => {
     Polls.find({}, (err, docs) => {
-        if (err)
-            return res.status(500).json(responseData("Somthing wrong happened , Please try again : " + err))
+        if(err)
+          return res.status(500).json(responseData("Somthing wrong happened , Please try again : " + err))
         res.json(responseData(null, docs))
     });
 }
 
-const findById = (req, res) => {
-    Polls.findById({ _id: req.params.id },
-        (err, doc) => {
-            if (err)
-                return res.status(500).json(responseData("An error occured while trying to search a poll"));
-            res.json(responseData(null, doc));
+const findById = (req, res)=>{
+    Polls.findById( {_id: req.params.id},
+        (err, doc) =>{
+          if(err)
+              return res.status(500).json(responseData("An error occured while trying to search a poll"));
+          res.json(responseData(null, doc));
         });
 }
 
@@ -68,16 +68,16 @@ const update = async (req, res) => {
     Polls.updateOne({ _id: poll_id, "foods._id": food_id },
         { $push: { "foods.$.votes": user } },
         ((error, doc) => {
-            if (error) return res.status(500).json(responseData("An Error haappened while trying to update a poll" + error))
-            res.json(responseData(null, doc))
+                if(error) return res.status(500).json(responseData("An Error haappened while trying to update a poll" + error))
+                res.json(responseData(null, doc))
         }
         ));
 }
 
-const deleteById = (req, res) => {
-    Polls.deleteOne({ _id: req.params.id },
-        (error => {
-            if (error) return res.status(500).json(responseData("Error Happened while trying to remove poll : " + error))
+const deleteById = (req, res)=>{
+     Polls.deleteOne({_id: req.params.id},
+        (error =>  {
+            if(error)  return res.status(500).json(responseData("Error Happened while trying to remove poll : " +error))
         }));
     res.json(responseData("Poll removed successfully", req.params.id));
 }
