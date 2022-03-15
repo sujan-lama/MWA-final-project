@@ -9,7 +9,7 @@ const usersRoutes = require('./routes/usersRoutes');
 const pollsRoutes = require('./routes/pollsRoutes');
 const foodsRoutes = require('./routes/foodsroutes');
 const authenticationMW = require('./middlewares/authenticationMW');
-const {pollController} = require("./controllers/pollsController");
+const { pollController } = require("./controllers/pollsController");
 
 require('dotenv').config();
 const { generateUser } = require('./controllers/sharedControllers');
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 const mongoDB = 'mongodb://localhost:/project';
-mongoose.connect(process.env.HOST || mongoDB, { useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.HOST || mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //Get the default connection
 const db = mongoose.connection;
@@ -34,9 +34,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 //routes
 
 app.use('/api/users', usersRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/polls',  pollsRoutes);
-app.use('/api/foods', foodsRoutes);
+app.use('/api/admin', authenticationMW, adminRoutes);
+app.use('/api/polls', authenticationMW, pollsRoutes);
+app.use('/api/foods', authenticationMW, foodsRoutes);
 
 app.all('*', (req, res, next) => {
     res.status(404);
@@ -54,4 +54,5 @@ app.listen(port, 'localhost', async () => {
     console.log(`Listening on port ${port}`);
     console.log('generating default users');
     await generateUser();
+
 });

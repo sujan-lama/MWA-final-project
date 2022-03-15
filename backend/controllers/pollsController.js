@@ -8,18 +8,18 @@ const mongoose = require('mongoose');
 
 const findAll = (req, res) => {
     Polls.find({}, (err, docs) => {
-        if(err)
-          return res.status(500).json(responseData("Somthing wrong happened , Please try again : " + err))
+        if (err)
+            return res.status(500).json(responseData("Somthing wrong happened , Please try again : " + err))
         res.json(responseData(null, docs))
     });
 }
 
-const findById = (req, res)=>{
-    Polls.findById( {_id: req.params.id},
-        (err, doc) =>{
-          if(err)
-              return res.status(500).json(responseData("An error occured while trying to search a poll"));
-          res.json(responseData(null, doc));
+const findById = (req, res) => {
+    Polls.findById({ _id: req.params.id },
+        (err, doc) => {
+            if (err)
+                return res.status(500).json(responseData("An error occured while trying to search a poll"));
+            res.json(responseData(null, doc));
         });
 }
 
@@ -37,10 +37,6 @@ const save = async (req, res) => {
 
     if (!check.success) return res.status(400).json(check);
 
-    const foodsWithVotes = [];
-    JSON.parse(JSON.stringify(foods)).forEach(element => {
-        foodsWithVotes.push({ foodItem: element, votes: [] });
-    });
 
     // 3. Persist to db
     const poll = new Polls({
@@ -49,13 +45,13 @@ const save = async (req, res) => {
         start_date: parsed_start_date,
         end_date: parsed_end_date,
         target_date: parsed_target_date,
-        foods: foodsWithVotes
+        foods: foods
     });
     await poll.save();
 
     //4. return appropriate response/errs
     const range = `${parsed_start_date.format("dddd, MMMM Do YYYY, h:mm:ss a")} and ${parsed_end_date.format("dddd, MMMM Do YYYY, h:mm:ss a")}`
-    res.json(responseData( `A poll successfully created between ${range}` , poll));
+    res.json(responseData(`A poll successfully created between ${range}`, poll));
 
 }
 
@@ -68,16 +64,16 @@ const update = async (req, res) => {
     Polls.updateOne({ _id: poll_id, "foods._id": food_id },
         { $push: { "foods.$.votes": user } },
         ((error, doc) => {
-                if(error) return res.status(500).json(responseData("An Error haappened while trying to update a poll" + error))
-                res.json(responseData(null, doc))
+            if (error) return res.status(500).json(responseData("An Error haappened while trying to update a poll" + error))
+            res.json(responseData(null, doc))
         }
         ));
 }
 
-const deleteById = (req, res)=>{
-     Polls.deleteOne({_id: req.params.id},
-        (error =>  {
-            if(error)  return res.status(500).json(responseData("Error Happened while trying to remove poll : " +error))
+const deleteById = (req, res) => {
+    Polls.deleteOne({ _id: req.params.id },
+        (error => {
+            if (error) return res.status(500).json(responseData("Error Happened while trying to remove poll : " + error))
         }));
     res.json(responseData("Poll removed successfully", req.params.id));
 }
@@ -86,6 +82,7 @@ const getVoteResults = async (req, res) => {
 
     let id = mongoose.Types.ObjectId(req.params.id);
     const match = { $match: { "_id": id } }
+
     const unwind = { $unwind: "$foods" }
     const project = { $project: { "_id": 1, title: 1, voteCounts: { $size: "$foods.votes" }, foods: 1 } }
     const sort = { $sort: { voteCounts: -1 } }

@@ -3,10 +3,10 @@ POST  http://localhost:3000/api/users/signup
 Content-Type: application/json
 
 {
-    "email":"sujan@gmail.com",
-    "password":"password",
-    "name":"Sujan Lama",
-    "role":"Admin"
+    "email":"admin@admin.com",
+    "password":"admin",
+    "name":"admin",
+    "role":"ADMIN"
 }
 
 ### delete user
