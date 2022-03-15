@@ -10,13 +10,18 @@ const mongoose = require('mongoose');
 const findAll = (req, res)=>{
     Polls.find({}, (err, docs) => {
         if(err)
-            res.status(500).json(responseData("Somthing wrong happened , Please try again : "+err))
+          return res.status(500).json(responseData("Somthing wrong happened , Please try again : "+err))
         res.json(responseData(null, docs))
     });
 }
 
 const findById = (req, res)=>{
-    Polls.findById( {_id: req.params.id}, (err, doc) => res.json(responseData(null, doc)));
+    Polls.findById( {_id: req.params.id},
+        (err, doc) =>{
+          if(err)
+              return res.status(500).json(responseData("An error occured while trying to search a poll"));
+          res.json(responseData(null, doc));
+        });
 }
 
 const save = async (req, res)=>{
@@ -56,12 +61,18 @@ const update = async (req, res) =>{
 
     Polls.updateOne({_id: poll_id, "foods._id": food_id},
         {$push: {"foods.$.votes": user}},
-        ((error, doc) => res.json(responseData(null, doc))));
+        ((error, doc) =>{
+                if(error) return res.status(500).json(responseData("An Error haappened while trying to update a poll" + error))
+                res.json(responseData(null, doc))
+        }
+        ));
 }
 
 const deleteById = (req, res)=>{
      Polls.deleteOne({_id: req.params.id},
-        (error => res.status(500).json(responseData("Error Happened while trying to remove poll : " +error))));
+        (error =>  {
+            if(error)  return res.status(500).json(responseData("Error Happened while trying to remove poll : " +error))
+        }));
     res.json(responseData("Poll removed successfully", req.params.id));
 }
 
@@ -72,9 +83,10 @@ const getVoteResults = async (req, res)=> {
     const unwind = {$unwind: "$foods"}
     const project = {$project: {"_id" : 1, title: 1 , voteCounts : {$size : "$foods.votes"} , foods : 1}}
     const sort = {$sort : {voteCounts: -1}}
+
     Polls.aggregate([match, unwind, project, sort], ((error, result) =>  {
         if(error)
-            res.status(500).json("Error occured when trying to fetch poll result : "+ error);
+            return res.status(500).json("Error occured when trying to fetch poll result : "+ error);
         res.json(responseData(null, result));
     }));
 }

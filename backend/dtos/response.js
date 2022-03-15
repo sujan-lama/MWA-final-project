@@ -5,3 +5,4 @@ module.exports = (message, data) => {
         data: data
     }
 }
+

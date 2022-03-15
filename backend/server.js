@@ -35,7 +35,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use('/api/users', usersRoutes);
 app.use('/api/protected', authenticationMW, protectedRoutes);
-app.use('/api/polls', pollsRoutes);
+app.use('/api/polls',  pollsRoutes);
 app.use('/api/foods', foodsRoutes);
 
 app.all('*', (req, res, next) => {
