@@ -6,6 +6,7 @@ import {AdminGuard} from "./guards/admin.guard";
 
 const router: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
+
   {
     path: 'login',
     loadChildren: () =>
