@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const mongoDB = 'mongodb://172.31.192.1/homework13';
+const mongoDB = 'mongodb:/0.0.0.0/homework13';
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //Get the default connection

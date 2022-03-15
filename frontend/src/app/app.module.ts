@@ -5,43 +5,20 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AuthorizationInterceptor } from './interceptors/authorization.interceptor';
-import { HomeComponent } from './modules/home/home.component';
-import { IsLoggedInGuard } from './guards/is-logged-in.guard';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
+import { AppRouterModule } from './app.router.module';
+
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(),
-    RouterModule.forRoot([
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
-      {
-        path: 'login',
-        loadChildren: () =>
-          import('./modules/login/login.module').then((module) => module.LoginModule),
-      },
-      {
-        path: 'signup',
-        loadChildren: () =>
-          import('./modules/signup/signup.module').then(
-            (module) => module.SignupModule
-          ),
-      },
-      {
-        path: 'protected',
-        loadChildren: () =>
-          import('./modules/protected/protected.module').then(
-            (module) => module.ProtectedModule
-          ),
-        canActivate: [IsLoggedInGuard],
-      },
-      { path: '**', redirectTo: '' },
-    ]),
+    AppRouterModule,
+    RouterModule
   ],
   providers: [
     {
@@ -52,4 +29,4 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
