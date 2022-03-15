@@ -1,46 +1,55 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {RouterModule} from '@angular/router';
 
-import { AppComponent } from './app.component';
-import { AuthorizationInterceptor } from './interceptors/authorization.interceptor';
-import { HomeComponent } from './modules/home/home.component';
-import { IsLoggedInGuard } from './guards/is-logged-in.guard';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
+import {AppComponent} from './app.component';
+import {AuthorizationInterceptor} from './interceptors/authorization.interceptor';
+import {HomeComponent} from './modules/home/home.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToastrModule} from 'ngx-toastr';
+import { AgGridModule } from '@ag-grid-community/angular';
+import {MatDialogModule} from "@angular/material/dialog";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {CustomDialogModule} from "./custom-dialog/custom-dialog.module";
+import {AuthGuard} from "./guards/auth.guard";
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    FormsModule,
     BrowserAnimationsModule, // required animations module
+    AgGridModule,
     ToastrModule.forRoot(),
+    CustomDialogModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
+      {path: '', redirectTo: 'home', pathMatch: 'full'},
+      {path: 'home', component: HomeComponent},
       {
         path: 'login',
         loadChildren: () =>
           import('./modules/login/login.module').then((module) => module.LoginModule),
       },
       {
-        path: 'signup',
+        path: 'add-user',
         loadChildren: () =>
-          import('./modules/signup/signup.module').then(
-            (module) => module.SignupModule
+          import('./modules/add-user/add-user.module').then(
+            (module) => module.AddUserModule
           ),
       },
       {
-        path: 'protected',
+        path: 'admin-home',
         loadChildren: () =>
-          import('./modules/protected/protected.module').then(
-            (module) => module.ProtectedModule
+          import('./modules/admin-home/admin-home.module').then(
+            (module) => module.AdminHomeModule
           ),
-        canActivate: [IsLoggedInGuard],
+        canActivate: [AuthGuard],
       },
-      { path: '**', redirectTo: '' },
+      {path: '**', redirectTo: ''},
     ]),
   ],
   providers: [
@@ -52,4 +61,5 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -1,11 +1,11 @@
 // dependencies
 const express = require('express');
 const usersRoutes = require('./routes/usersRoutes');
-const protectedRoutes = require('./routes/protectedRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-
+const { generateUser } = require('./controllers/sharedControllers');
 // instantiations
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const mongoDB = 'mongodb://172.31.192.1/homework13';
+const mongoDB = process.env.MONGODB_URL;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 //Get the default connection
@@ -26,7 +26,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 //routes
 app.use('/api/users', usersRoutes);
-app.use('/api/protected', protectedRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 app.all('*', (req, res, next) => {
@@ -41,4 +41,8 @@ app.use((err, req, res, next) => {
 
 // Boot up
 const port = app.get('port');
-app.listen(port, 'localhost', () => console.log(`Listening on port ${port}`));
+app.listen(port, 'localhost', async () => {
+    console.log(`Listening on port ${port}`);
+    console.log('generating default users');
+    await generateUser();
+});

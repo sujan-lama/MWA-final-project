@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css");
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url("ag-grid-community/dist/styles/ag-grid.css");
+@import url("ag-grid-community/dist/styles/ag-theme-alpine.css");
 
 .nav > ul {
   list-style-type: none;
@@ -219,3 +221,6 @@ button.toast-close-button {
     width: 25em;
   }
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

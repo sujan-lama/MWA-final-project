@@ -1,31 +1,28 @@
 import {Component, OnInit} from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators,} from '@angular/forms';
 import {map, mergeMap, Observable, of} from 'rxjs';
 import Response from '../../models/response';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
-import {AuthenticationService} from '../../services/authentication.service';
+import {AdminService} from "../../services/admin.service";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: 'signup.component.html',
-  styleUrls: ['signup.component.css'],
+  selector: 'app-add-user',
+  templateUrl: 'add-user.component.html',
+  styleUrls: ['add-user.component.css'],
 })
-export class SignupComponent implements OnInit {
-  signupForm: FormGroup;
+export class AddUserComponent implements OnInit {
+  adduserForm: FormGroup;
 
   constructor(
     formBuilder: FormBuilder,
     private router: Router,
+    private adminService: AdminService,
     private authenticationService: AuthenticationService,
     private toastr: ToastrService
   ) {
-    this.signupForm = formBuilder.group({
+    this.adduserForm = formBuilder.group({
       name: ['', Validators.compose([Validators.required])],
       email: [
         '',
@@ -45,14 +42,14 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
-    this.authenticationService
-      .signup(this.signupForm.value)
+    this.adminService
+      .addUser(this.adduserForm.value)
       .pipe(map((v) => v as Response))
       .subscribe((v) => {
         if (v.success) {
           this.toastr.success(v.message);
-          this.signupForm.reset();
-          this.router.navigate(['/login']);
+          this.adduserForm.reset();
+          this.router.navigate(['/admin-home']);
           return;
         }
 

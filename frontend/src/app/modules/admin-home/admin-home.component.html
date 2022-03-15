@@ -1,0 +1,16 @@
+<div style="padding:16px">
+  <div>
+    <button (click)="addUser()">Add user</button>
+  </div>
+  <br>
+  <ag-grid-angular
+    style="height: 500px;"
+    class="ag-theme-alpine"
+    [modules]="modules"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    (gridReady)="onGridReady($event)"
+    (rowClicked)="onRowClicked($event)"
+    [rowData]="rowData | async"
+  ></ag-grid-angular>
+</div>
