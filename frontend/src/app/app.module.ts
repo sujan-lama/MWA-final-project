@@ -1,4 +1,4 @@
-import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule} from '@angular/router';
@@ -8,12 +8,11 @@ import {AuthorizationInterceptor} from './interceptors/authorization.interceptor
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
-import { AgGridModule } from '@ag-grid-community/angular';
+import {AgGridModule} from '@ag-grid-community/angular';
 import {MatDialogModule} from "@angular/material/dialog";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {CustomDialogModule} from "./custom-dialog/custom-dialog.module";
 
-import { AppRouterModule } from './app.router.module';
+import {AppRouterModule} from './app.router.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +25,6 @@ import { AppRouterModule } from './app.router.module';
     BrowserAnimationsModule, // required animations module
     AgGridModule,
     ToastrModule.forRoot(),
-    CustomDialogModule,
     AppRouterModule,
     RouterModule
   ],
@@ -39,4 +37,5 @@ import { AppRouterModule } from './app.router.module';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+}

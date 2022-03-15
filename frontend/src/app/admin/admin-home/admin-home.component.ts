@@ -4,11 +4,11 @@ import {ClientSideRowModelModule} from '@ag-grid-community/client-side-row-model
 
 import {ColDef, GridReadyEvent, Module, RowClickedEvent,} from '@ag-grid-community/core';
 import Response from "../../models/response";
-import {map, mergeMap, Observable, of, Subscription} from "rxjs";
+import {map, mergeMap, Observable, of} from "rxjs";
 import {MatDialog} from '@angular/material/dialog';
-import {AddUserComponent} from "../../modules/add-user/add-user.component";
+import {AddUserComponent} from "../add-user/add-user.component";
 import User from "../../models/users";
-import {UserdialogComponent} from "../../custom-dialog/userdialog/userdialog.component";
+import {UserdialogComponent} from "../userdialog/userdialog.component";
 
 @Component({
   selector: 'app-admin-home',
@@ -38,9 +38,6 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
 
   rowData!: Observable<any[]>;
 
-  dialogSubscription !: Subscription;
-  dialogSubscription2 !: Subscription;
-
   constructor(
     private service: AdminService,
     public dialog: MatDialog
@@ -65,7 +62,7 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
 
   addUser() {
     const dialogRef = this.dialog.open(AddUserComponent);
-    this.dialogSubscription = dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
         this.fetchData();
       }
@@ -73,8 +70,7 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.dialogSubscription.unsubscribe();
-    this.dialogSubscription2.unsubscribe();
+
   }
 
   onRowClicked(event: RowClickedEvent) {
@@ -82,7 +78,7 @@ export class AdminHomeComponent implements OnInit, OnDestroy {
       data: event.data as User
     });
 
-    this.dialogSubscription2 = dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.service.deleteUser(result).subscribe(v => this.fetchData())
       }

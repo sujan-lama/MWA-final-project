@@ -15,7 +15,7 @@ import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
   </div>
   `
 })
-export class FormComponentComponent implements OnInit {
+export class FormComponent implements OnInit {
 
   @Input() required = false;
   @Input() label!: string;

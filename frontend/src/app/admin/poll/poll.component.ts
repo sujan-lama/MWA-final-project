@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PollService } from './poll.service';
+import {PollService} from "../../services/poll.service";
 
 @Component({
   selector: 'app-poll',

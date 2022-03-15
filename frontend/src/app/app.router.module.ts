@@ -1,17 +1,20 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {HomeComponent} from './modules/home/home.component';
 import {LoginGuard} from "./guards/login.guard";
 import {AuthGuard} from "./guards/auth.guard";
 
 const router: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
-  {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {
     path: 'login',
     loadChildren: () =>
       import('./modules/login/login.module').then((module) => module.LoginModule),
     canActivate: [LoginGuard]
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'admin',
@@ -23,8 +26,7 @@ const router: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(router)],
-  exports: [],
-  declarations: [HomeComponent],
+  declarations: [],
   providers: [],
 })
 export class AppRouterModule {

@@ -34,6 +34,7 @@ export class AuthGuard implements CanActivate {
     if (user === null) {
       this.toastr.error('Not authorized');
       this.tokenStorage.clear();
+      this.router.navigate(['/login']);
       return false;
     }
     return true;

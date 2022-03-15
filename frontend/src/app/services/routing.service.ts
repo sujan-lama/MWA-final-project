@@ -20,11 +20,8 @@ export class RoutingService {
       case "ADMIN":
         this.router.navigate(['/admin']);
         break;
-      case "USER":
-        this.router.navigate(['/home']);
-        break;
       default:
-        this.router.navigate(['/home']);
+        this.router.navigate(['/user']);
     }
   }
 }
