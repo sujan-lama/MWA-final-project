@@ -75,13 +75,5 @@ async function verifyEmail(req, res) {
     return res.json({ success: true, message: "Email is available" });
 }
 
-async function checkEmailAddressUnique(email) {
-    const userDetail = await Users.findOne({ email: email });
-    if (userDetail)
-        return false;
-    return true;
-}
-
-
 
 module.exports = { login, verifyEmail };

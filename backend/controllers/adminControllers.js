@@ -1,4 +1,4 @@
-const responseData = require('../response/response');
+const responseData = require('../dtos/response');
 const Users = require('../models/users');
 const { saveUser, checkEmailAddressUnique } = require('./sharedControllers');
 

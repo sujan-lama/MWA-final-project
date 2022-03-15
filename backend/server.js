@@ -1,13 +1,11 @@
 // dependencies - publics
 const express = require('express');
-const usersRoutes = require('./routes/usersRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
 // Custom modules
 const usersRoutes = require('./routes/usersRoutes');
-const protectedRoutes = require('./routes/protectedRoutes');
 const pollsRoutes = require('./routes/pollsRoutes');
 const foodsRoutes = require('./routes/foodsroutes');
 const authenticationMW = require('./middlewares/authenticationMW');
