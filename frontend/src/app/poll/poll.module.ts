@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormComponentModule } from '../form-component/form-component.module';
 import { PollComponent } from './poll.component';
+import { PollService } from './poll.service';
 
 
 const routes: Routes = [{ path: '', component: PollComponent }]
@@ -19,6 +20,7 @@ const routes: Routes = [{ path: '', component: PollComponent }]
     NgSelectModule,
     RouterModule.forChild(routes),
     FormComponentModule
-  ]
+  ],
+  providers: [PollService]
 })
 export class PollModule { }

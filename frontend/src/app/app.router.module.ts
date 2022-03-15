@@ -2,8 +2,8 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { IsLoggedInGuard } from './guards/is-logged-in.guard';
 import { HomeComponent } from './modules/home/home.component';
+import {AuthGuard} from "./guards/auth.guard";
 
 const router: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,23 +14,23 @@ const router: Routes = [
       import('./modules/login/login.module').then((module) => module.LoginModule),
   },
   {
-    path: 'signup',
-    loadChildren: () =>
-      import('./modules/signup/signup.module').then(
-        (module) => module.SignupModule
-      ),
-  },
-  {
-    path: 'protected',
-    loadChildren: () =>
-      import('./modules/protected/protected.module').then(
-        (module) => module.ProtectedModule
-      ),
-    canActivate: [IsLoggedInGuard],
-  },
-  {
     path: 'poll',
     loadChildren: () => import('./poll/poll.module').then((m) => m.PollModule)
+  },
+  {
+    path: 'add-user',
+    loadChildren: () =>
+      import('./modules/add-user/add-user.module').then(
+        (module) => module.AddUserModule
+      ),
+  },
+  {
+    path: 'admin-home',
+    loadChildren: () =>
+      import('./modules/admin-home/admin-home.module').then(
+        (module) => module.AdminHomeModule
+      ),
+    canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: '' }
 ];

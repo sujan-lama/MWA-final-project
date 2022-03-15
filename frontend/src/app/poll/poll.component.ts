@@ -38,6 +38,8 @@ export class PollComponent implements OnInit {
     }
     this.service.createPoll(this.form.value).subscribe(res => {
       this.goBack();
+    }, (err) => {
+
     });
 
   }
