@@ -6,7 +6,6 @@ const { Foods } = require("../models/foods");
 const { Users } = require("../models/users");
 const mongoose = require('mongoose');
 
-
 const findAll = (req, res) => {
     Polls.find({}, (err, docs) => {
         if (err)

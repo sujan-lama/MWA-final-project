@@ -8,6 +8,7 @@ router.post("/", pollController.save);
 router.get("/:id", pollController.findById);
 router.put("/:id", pollController.update); // vote
 router.delete("/:id", pollController.deleteById);
+router.get("/:id/results", pollController.getVoteResults)
 
 router.get("/:id/results", pollController.getVoteResults)
 
