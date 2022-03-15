@@ -9,11 +9,12 @@ import {
 import {ToastrService} from 'ngx-toastr';
 import {Observable} from 'rxjs';
 import {TokenStorageService} from '../services/token-storage.service';
+import {RoutingService} from "../services/routing.service";
 
 @Injectable({
   providedIn: 'root',
 })
-export class IsLoggedInGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
     private tokenStorage: TokenStorageService,
@@ -29,7 +30,8 @@ export class IsLoggedInGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.tokenStorage.getUser() === null) {
+    const user = this.tokenStorage.getUser();
+    if (user === null) {
       this.toastr.error('Not authorized');
       this.tokenStorage.clear();
       this.router.navigate(['/login']);
