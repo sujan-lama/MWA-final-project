@@ -8,6 +8,7 @@ router.post("/", pollController.save);
 router.get("/:id", pollController.findById);
 router.put("/:id", pollController.update);
 router.delete("/:id", pollController.deleteById);
+router.get("/:id/results", pollController.getVoteResults)
 
 module.exports = router;
 

@@ -38,14 +38,14 @@ POST http://localhost:3000/api/polls
 Content-Type: application/json
 
 {
-  "title": "Dinner ",
+  "title": "Lunch Today ",
   "start_date": "2022-03-18T08:02:17-05:00",
   "end_date":   "2022-03-21T16:34:27-05:00",
   "target_date": "2022-03-23T16:34:27-05:00",
   "foods": [
     {
       "foodItem": {
-        "name": "something",
+        "name": "Dish1",
         "category": "Lunch"
       },
       "votes": [
@@ -54,6 +54,19 @@ Content-Type: application/json
           "name":"Admin",
           "role":"admin"
         },
+        {
+          "email":"user@gmail.com",
+          "name":"User",
+          "role":"user"
+        }
+      ]
+    },
+    {
+      "foodItem": {
+        "name": "Dish 2",
+        "category": "Lunch"
+      },
+      "votes": [
         {
           "email":"user@gmail.com",
           "name":"User",
@@ -79,4 +92,43 @@ Content-Type: application/json
 ### remove poll
 DELETE  http://localhost:3000/api/polls/622febbea6812511fc5cc2d5
 
-### Report and query related entities
+### Report and query related entities  - change Id
+GET http://localhost:3000/api/polls/623025f4577773f6d2a6efc8/results
+
+
+############### Food related api's ###############
+
+# pre- populate the data
+POST http://localhost:3000/api/foods/pre-populate
+
+
+### Get all foods
+GET http://localhost:3000/api/foods
+
+### GET food by Id
+GET http://localhost:3000/api/foods/622fff056143f8ca66127356
+
+### GET food by category - Lunch , dinner , breakfast
+GET http://localhost:3000/api/foods/category/lunch
+
+### ADD FOOD item
+POST http://localhost:3000/api/foods/
+Content-Type: application/json
+
+{
+  "name": " Random Meal",
+  "category": "BRUNCH"
+}
+
+
+###
+PUT http://localhost:3000/api/foods/622fff9934d0dcadcbe9abe5
+Content-Type: application/json
+
+{
+  "name": "new Name",
+  "category": "LUNCH"
+}
+
+### DELETE food
+DELETE  http://localhost:3000/api/foods/622fff9934d0dcadcbe9abe5

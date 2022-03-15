@@ -7,7 +7,9 @@ const cors = require('cors');
 const usersRoutes = require('./routes/usersRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
 const pollsRoutes = require('./routes/pollsRoutes');
+const foodsRoutes = require('./routes/foodsroutes');
 const authenticationMW = require('./middlewares/authenticationMW');
+const {pollController} = require("./controllers/pollsController");
 
 require('dotenv').config();
 
@@ -30,9 +32,11 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 //routes
+
 app.use('/api/users', usersRoutes);
 app.use('/api/protected', authenticationMW, protectedRoutes);
-app.use('/api/polls',authenticationMW,  pollsRoutes);
+app.use('/api/polls', pollsRoutes);
+app.use('/api/foods', foodsRoutes);
 
 app.all('*', (req, res, next) => {
     res.status(404);

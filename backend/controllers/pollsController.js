@@ -4,6 +4,8 @@ const {validateDate} = require("../utils/validations");
 const {Polls} = require("../models/polls");
 const {Foods} = require("../models/foods");
 const {Users} = require("../models/users");
+const mongoose = require('mongoose');
+
 
 const findAll = (req, res)=>{
     Polls.find({}, (err, docs) => {
@@ -57,16 +59,26 @@ const update = async (req, res) =>{
         ((error, doc) => res.json(responseData(null, doc))));
 }
 
-const deleteById =   (req, res)=>{
+const deleteById = (req, res)=>{
      Polls.deleteOne({_id: req.params.id},
         (error => res.status(500).json(responseData("Error Happened while trying to remove poll : " +error))));
     res.json(responseData("Poll removed successfully", req.params.id));
 }
 
-const getResults = (req, res)=>{
+const getVoteResults = async (req, res)=> {
 
+    let id = mongoose.Types.ObjectId(req.params.id);
+    const match = {$match: {"_id": id}}
+    const unwind = {$unwind: "$foods"}
+    const project = {$project: {"_id" : 1, title: 1 , voteCounts : {$size : "$foods.votes"} , foods : 1}}
+    const sort = {$sort : {voteCounts: -1}}
+    Polls.aggregate([match, unwind, project, sort], ((error, result) =>  {
+        if(error)
+            res.status(500).json("Error occured when trying to fetch poll result : "+ error);
+        res.json(responseData(null, result));
+    }));
 }
 
-const pollController = {findAll, findById, save, update, deleteById, getResults};
+const pollController = {findAll, findById, save, update, deleteById, getVoteResults};
 
 module.exports = {"pollController": pollController};
