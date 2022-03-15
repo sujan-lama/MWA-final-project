@@ -7,6 +7,12 @@ import {Router} from "@angular/router";
   template: `
     <div class="nav">
       <ul>
+        <li>
+          <a [routerLink]="['/admin','home']">Users</a>
+        </li>
+        <li>
+          <a [routerLink]="['/admin','poll']">Create Poll</a>
+        </li>
         <li style="float:right">
           <a (click)="logout()" [routerLink]="['/', 'login']">Logout</a>
         </li>

@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 import {PollService} from "../../services/poll.service";
+import {map} from "rxjs";
+import Response from "../../models/response";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-poll',
@@ -17,13 +20,16 @@ export class PollComponent implements OnInit {
     startDateTime: [null, [Validators.required]],
     endDateTime: [null, [Validators.required]],
     foodItems: this.fb.array([])
-  }, { validators: this.pollDateValidator });
+  }, {validators: this.pollDateValidator});
 
-  public categories = [{ name: 'Breakfast' }, { name: 'Launch' }, { name: 'Dinner' }, { name: 'Brunch' }];
-  public foodItems = [{ name: 'Pizzas' }, { name: 'Indian Dal' }];
+  public categories = [{name: 'Breakfast'}, {name: 'Lunch'}, {name: 'Dinner'}, {name: 'Brunch'}];
+  public foodItems = [];
+  todayWithTime: string = moment().format("YYYY-MM-DDThh:mm:ss");                          // 2022-03-15T17:39:55-05:00
+  tomorrowWithTime: string = moment().add(1, "days").format("YYYY-MM-DDThh:mm:ss");                          // 2022-03-15T17:39:55-05:00
+  tomorrow: string = moment().add(1, "days").format('YYYY-MM-DD');
 
   constructor(private fb: FormBuilder, private router: Router, private service: PollService) {
-
+    console.log(this.todayWithTime)
   }
 
   ngOnInit(): void {
@@ -49,18 +55,16 @@ export class PollComponent implements OnInit {
   }
 
   onSelected(itm: any) {
-    this.form.controls['foodItems'].markAsTouched();
-    if (!itm) {
-      return;
-    }
-    let newArr: FormControl[] = [];
-    itm.forEach((element: string) => {
-      newArr.push(this.createItem(element));
+    this.service.getFoodFromCategory(itm.name).pipe(
+      map(v => v as Response),
+    ).subscribe(v => {
+      this.foodItems = v.data;
     });
-    this.form.setControl('foodItems', this.fb.array(newArr));
+    this.form.controls['foodItems'].markAsTouched();
   }
+
   createItem(val: string) {
-    return this.fb.control({ name: val });
+    return this.fb.control({name: val});
   }
 
   goBack() {
@@ -76,7 +80,7 @@ export class PollComponent implements OnInit {
       targetedDateEl?.setErrors(null);
       const days = convertToDay(Date.parse(targetDate) - Date.now());
       if (days <= 0) {
-        targetedDateEl?.setErrors({ 'date': 'Date must be after today' });
+        targetedDateEl?.setErrors({'date': 'Date must be after today'});
       }
     }
     if (startDateTime) {
@@ -84,12 +88,12 @@ export class PollComponent implements OnInit {
       startDateTimeEl?.setErrors(null);
       const days = convertToDay(Date.parse(targetDate) - Date.parse(startDateTime));
       if (days <= 0) {
-        startDateTimeEl?.setErrors({ 'date': 'Start Date/Time must be before targetted day' });
+        startDateTimeEl?.setErrors({'date': 'Start Date/Time must be before targetted day'});
       }
 
       const days1 = convertToDay(Date.parse(startDateTime) - Date.now());
       if (days1 <= 0) {
-        startDateTimeEl?.setErrors({ 'date': 'Start Date/Time must be after today.' });
+        startDateTimeEl?.setErrors({'date': 'Start Date/Time must be after today.'});
       }
     }
     if (endDateTime) {
@@ -97,12 +101,12 @@ export class PollComponent implements OnInit {
       endDateTimeEl?.setErrors(null);
       const days = convertToDay(Date.parse(startDateTime) - Date.parse(endDateTime));
       if (days < 0) {
-        endDateTimeEl?.setErrors({ 'date': 'End Date/Time must be after start date/time.' });
+        endDateTimeEl?.setErrors({'date': 'End Date/Time must be after start date/time.'});
       }
 
       const days1 = convertToDay(Date.parse(targetDate) - Date.parse(endDateTime));
       if (days1 < 0) {
-        endDateTimeEl?.setErrors({ 'date': 'End Date/Time must be before targeted date/time.' });
+        endDateTimeEl?.setErrors({'date': 'End Date/Time must be before targeted date/time.'});
       }
     }
     return null;
