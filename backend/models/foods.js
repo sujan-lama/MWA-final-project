@@ -8,4 +8,6 @@ const schema = new Schema({
     continent:[String]
 });
 
+});
+
 module.exports = {"Foods": mongoose.model("Foods", schema), "FoodSchema" : schema};
