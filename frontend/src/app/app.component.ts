@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {TokenStorageService} from "./services/token-storage.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { TokenStorageService } from "./services/token-storage.service";
+import { Router } from "@angular/router";
+
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,6 @@ import {Router} from "@angular/router";
       <ul>
         <li><a [routerLink]="['/', 'home']">Home</a></li>
         <li *ngIf="!isLoggedIn" style="float:right"><a [routerLink]="['/', 'login']">Login</a></li>
-        <li *ngIf="!isLoggedIn" style="float:right">
-          <a [routerLink]="['/', 'signup']">Signup</a>
-        </li>
         <li *ngIf="isLoggedIn" style="float:right">
           <a (click)="logout()" [routerLink]="['/', 'login']">Logout</a>
         </li>
@@ -21,7 +19,7 @@ import {Router} from "@angular/router";
   `,
 })
 export class AppComponent implements OnInit {
-  title = 'homework-13-sujan-lama';
+  title = 'mwa-final-project';
   isLoggedIn = false;
 
   constructor(private tokenStorage: TokenStorageService, private router: Router) {

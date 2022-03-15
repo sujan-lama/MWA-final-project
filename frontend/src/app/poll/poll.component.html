@@ -1,0 +1,38 @@
+<div class="container" *ngIf="form">
+  <form [formGroup]="form" #pForm="ngForm">
+    <div class="col-12 row">
+
+      <app-form-component [required]="true" label="Title" [control]="form.get('title')" class="col-12">
+        <input formControlName="title" class="form-control">
+      </app-form-component>
+
+      <app-form-component [required]="true" label="Category" [control]="form.get('category')" class="col-6">
+        <ng-select [items]="categories" bindLabel="name" bindName="name" formControlName="category">
+        </ng-select>
+      </app-form-component>
+
+      <app-form-component [required]="true" label="Date For Voting" [control]="form.get('targetedDate')" class="col-6">
+        <input type="date" formControlName="targetedDate" class="form-control">
+      </app-form-component>
+
+
+      <app-form-component [required]="true" label="Food Items" [control]="form.get('foodItems')" class="col-12">
+        <ng-select [items]="foodItems" bindLabel="name" bindName="name" formArrayName="foodItems" [multiple]="true"
+          (change)="onSelected($event)">
+        </ng-select>
+      </app-form-component>
+      <app-form-component [required]="true" label="Start Date/Time" [control]="form.get('startDateTime')" class="col-6">
+        <input type="datetime-local" formControlName="startDateTime" class="form-control">
+      </app-form-component>
+      <app-form-component [required]="true" label="End Date/Time" [control]="form.get('endDateTime')" class="col-6">
+        <input type="datetime-local" formControlName="endDateTime" class="form-control">
+      </app-form-component>
+
+      <div class="form-group" class="col-12">
+        <button class="btn btn-light" type="button" (click)="goBack()" >Cancel</button>
+        <button class="btn btn-success ml-4" type="button" (click)="addPole()" [disabled]="!form.valid">Submit</button>
+      </div>
+    </div>
+  </form>
+
+</div>

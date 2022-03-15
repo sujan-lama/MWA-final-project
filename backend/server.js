@@ -1,5 +1,7 @@
 // dependencies - publics
 const express = require('express');
+const usersRoutes = require('./routes/usersRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
@@ -12,7 +14,7 @@ const authenticationMW = require('./middlewares/authenticationMW');
 const {pollController} = require("./controllers/pollsController");
 
 require('dotenv').config();
-
+const { generateUser } = require('./controllers/sharedControllers');
 // instantiations
 const app = express();
 
@@ -34,7 +36,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 //routes
 
 app.use('/api/users', usersRoutes);
-app.use('/api/protected', authenticationMW, protectedRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/polls',  pollsRoutes);
 app.use('/api/foods', foodsRoutes);
 
@@ -50,4 +52,8 @@ app.use((err, req, res, next) => {
 
 // Boot up
 const port = app.get('port');
-app.listen(port, 'localhost', () => console.log(`Listening on port ${port}`));
+app.listen(port, 'localhost', async () => {
+    console.log(`Listening on port ${port}`);
+    console.log('generating default users');
+    await generateUser();
+});

@@ -2,8 +2,7 @@ const {Users }  = require("../models/users");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const responseData = require('../dtos/response');
-const saltRounds = 10;
-
+const {checkEmailAddressUnique}  = require('./sharedControllers');
 async function login(req, res) {
     try {
 
@@ -25,8 +24,13 @@ async function login(req, res) {
         }
 
         //login successful
-        const accessToken = jwt.sign({ id: user.id, email: user.email, password: user.password, role: user.role }, process.env.TOKEN_SECRET);
-        const data = { id: user.id, email: user.email, name: user.name, token: accessToken };
+        const accessToken = jwt.sign({
+            id: user.id,
+            email: user.email,
+            password: user.password,
+            role: user.role
+        }, process.env.TOKEN_SECRET);
+        const data = { id: user.id, email: user.email, name: user.name, token: accessToken, role: user.role };
         return res.json(responseData("Login successful", data));
     } catch (error) {
         console.log(error);
@@ -47,8 +51,8 @@ async function signup(req, res) {
         }
 
         // generate new id
-       //const id = Math.floor(new Date().getTime() / 1000).toString();
-        let userData = { email: email, password: encryptedPassword, name: name, role: role };
+        const id = Math.floor(new Date().getTime() / 1000).toString();
+        let userData = { _id: id, email: email, password: encryptedPassword, name: name, role: role };
         const user = new Users(userData);
         await user.save();
         delete userData.password;
@@ -73,9 +77,11 @@ async function verifyEmail(req, res) {
 
 async function checkEmailAddressUnique(email) {
     const userDetail = await Users.findOne({ email: email });
-    return !userDetail;
-
+    if (userDetail)
+        return false;
+    return true;
 }
 
 
-module.exports = { login, signup, verifyEmail };
+
+module.exports = { login, verifyEmail };

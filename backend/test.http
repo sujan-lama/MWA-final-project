@@ -9,12 +9,16 @@ Content-Type: application/json
     "role":"Admin"
 }
 
+### delete user
+DELETE http://localhost:3000/api/admin/delete-user/a@a.com
+
+
 ### login
 POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-    "email":"sujan@gmail.com",
+    "email":"admin@admin.com",
     "password":"password"
 }
 
@@ -22,9 +26,9 @@ Content-Type: application/json
 GET http://localhost:3000/api/users/verify/sujan2@gmail.com
 
 
-### get protected
-GET http://localhost:3000/api/protected
-Authorization: Bearer //put jwt token after login
+### get users
+GET http://localhost:3000/api/admin/users
+Authorization: Bearer
 
 
 ##################   API REQUESTS FOR POLL ENTITY ########

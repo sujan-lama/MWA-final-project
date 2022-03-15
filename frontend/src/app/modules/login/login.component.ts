@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {AuthenticationService} from '../../services/authentication.service';
 import {TokenStorageService} from '../../services/token-storage.service';
+import {RoutingService} from "../../services/routing.service";
 
 @Component({
   selector: 'app-login',
@@ -18,11 +19,12 @@ export class LoginComponent implements OnInit {
   constructor(
     formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
-    private router: Router,
     private tokenStorage: TokenStorageService,
+    private routingService: RoutingService,
     private toastr: ToastrService
   ) {
-    this.loginForm = formBuilder.group({
+    this
+      .loginForm = formBuilder.group({
       email: [
         '',
         Validators.compose([
@@ -49,13 +51,15 @@ export class LoginComponent implements OnInit {
           this.tokenStorage.saveUser(v.data);
           this.toastr.clear();
           this.toastr.success(v.message);
-          this.router.navigate(['/protected']);
+          this.routingService.loginSuccessRoute();
         },
         error => {
           this.toastr.error(error.error.message);
         });
   }
 
-  ngOnInit(): void {
+  ngOnInit()
+    :
+    void {
   }
 }

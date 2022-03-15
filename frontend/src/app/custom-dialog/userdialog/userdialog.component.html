@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>User Profile</h1>
+<mat-dialog-content>
+  Name: {{data.name}}
+  <br>
+  Email: {{data.email}}
+  <br>
+  <br>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="data.email">Delete User</button>
+</mat-dialog-actions>
