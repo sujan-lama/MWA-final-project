@@ -1,11 +1,11 @@
 // dependencies
 const express = require('express');
 const usersRoutes = require('./routes/usersRoutes');
-const protectedRoutes = require('./routes/protectedRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-const { generateUser } = require('./controllers/usersController');
+const { generateUser } = require('./controllers/sharedControllers');
 // instantiations
 const app = express();
 
@@ -26,7 +26,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 //routes
 app.use('/api/users', usersRoutes);
-app.use('/api/protected', protectedRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 app.all('*', (req, res, next) => {

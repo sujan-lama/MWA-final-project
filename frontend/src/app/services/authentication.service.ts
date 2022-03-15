@@ -17,8 +17,4 @@ export class AuthenticationService {
   isEmailUnique(email: string) {
     return this.client.get(BASE_URL + `/verify/${email}`);
   }
-
-  signup(body: { name: string; email: string; password: string }) {
-    return this.client.post(BASE_URL + '/signup', body);
-  }
 }
