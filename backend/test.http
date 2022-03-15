@@ -1,11 +1,5 @@
-### generate users
-GET http://localhost:3000/api/users/generate
-Accept: application/json
-
-
-### Add user
-POST  http://localhost:3000/api/admin/add-user
-Authorization: Bearer 
+### signup
+POST  http://localhost:3000/api/users/signup
 Content-Type: application/json
 
 {
@@ -16,7 +10,7 @@ Content-Type: application/json
 }
 
 ### delete user
-DELETE http://localhost:3000/api/admin/delete-user/a@a.com 
+DELETE http://localhost:3000/api/admin/delete-user/a@a.com
 
 
 ### login
@@ -34,4 +28,111 @@ GET http://localhost:3000/api/users/verify/sujan2@gmail.com
 
 ### get users
 GET http://localhost:3000/api/admin/users
-Authorization: Bearer 
+Authorization: Bearer
+
+
+##################   API REQUESTS FOR POLL ENTITY ########
+
+### GET polls
+GET http://localhost:3000/api/polls
+#Authorization: Bearer
+
+### save poll
+POST http://localhost:3000/api/polls
+Content-Type: application/json
+
+{
+  "title": "Lunch Today ",
+  "start_date": "2022-03-18T08:02:17-05:00",
+  "end_date":   "2022-03-21T16:34:27-05:00",
+  "target_date": "2022-03-23T16:34:27-05:00",
+  "foods": [
+    {
+      "foodItem": {
+        "name": "Dish1",
+        "category": "Lunch"
+      },
+      "votes": [
+        {
+          "email":"admin@gmail.com",
+          "name":"Admin",
+          "role":"admin"
+        },
+        {
+          "email":"user@gmail.com",
+          "name":"User",
+          "role":"user"
+        }
+      ]
+    },
+    {
+      "foodItem": {
+        "name": "Dish 2",
+        "category": "Lunch"
+      },
+      "votes": [
+        {
+          "email":"user@gmail.com",
+          "name":"User",
+          "role":"user"
+        }
+      ]
+    }
+  ]
+}
+
+### GET poll by Id
+GET http://localhost:3000/api/polls/6230b76ee3b889ee669b7b44
+
+### Vote for a food
+PUT http://localhost:3000/api/polls/622feb4b8d813d8b44888c38
+Content-Type: application/json
+
+{
+  "food_id": "622feb4b8d813d8b44888c39",
+  "user_id": "622fe35408e000383f74c5d6"
+}
+
+### remove poll
+DELETE  http://localhost:3000/api/polls/622febbea6812511fc5cc2d5
+
+### Report and query related entities  - change Id
+GET http://localhost:3000/api/polls/623025f4577773f6d2a6efc8/results
+
+
+############### Food related api's ###############
+
+# pre- populate the data
+POST http://localhost:3000/api/foods/pre-populate
+
+
+### Get all foods
+GET http://localhost:3000/api/foods
+
+### GET food by Id
+GET http://localhost:3000/api/foods/622fff056143f8ca66127356
+
+### GET food by category - Lunch , dinner , breakfast
+GET http://localhost:3000/api/foods/category/lunch
+
+### ADD FOOD item
+POST http://localhost:3000/api/foods/
+Content-Type: application/json
+
+{
+  "name": " Random Meal",
+  "category": "BRUNCH"
+}
+
+
+###
+PUT http://localhost:3000/api/foods/622fff9934d0dcadcbe9abe5
+Content-Type: application/json
+
+{
+  "name": "new Name",
+  "category": "LUNCH"
+}
+
+### DELETE food
+DELETE  http://localhost:3000/api/foods/622fff9934d0dcadcbe9abe5

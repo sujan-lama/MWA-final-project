@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Oatmeal",
+    "category": "BREAKFAST"
+  },
+  {
+    "name": "Scrambled Eggs",
+    "category": "BREAKFAST"
+  },
+  {
+    "name": "Pancakes",
+    "category": "BREAKFAST"
+  },
+  {
+    "name": "Breakfast Potatoes",
+    "category": "BREAKFAST"
+  },
+  {
+    "name": "Hardboiled Eggs",
+    "category": "BREAKFAST"
+  },
+  {
+    "name": " Quinoa Salad",
+    "category": "LUNCH"
+  },
+  {
+    "name": " Plain Salad",
+    "category": "LUNCH"
+  },
+  {
+    "name": " Mexican Style Meal",
+    "category": "LUNCH"
+  },
+  {
+    "name": " Kale Salad",
+    "category": "LUNCH"
+  },
+  {
+    "name": " Tomato and Cucumber Salad",
+    "category": "DINNER"
+  },
+  {
+    "name": "Greek Salad Bowl",
+    "category": "DINNER"
+  },
+  {
+    "name": "Tofu Burger",
+    "category": "BRUNCH"
+  }
+]

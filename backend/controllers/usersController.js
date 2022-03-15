@@ -1,7 +1,7 @@
-const Users = require("../models/users");
+const {Users }  = require("../models/users");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const responseData = require('../response/response');
+const responseData = require('../dtos/response');
 const {checkEmailAddressUnique}  = require('./sharedControllers');
 async function login(req, res) {
     try {
@@ -39,6 +39,32 @@ async function login(req, res) {
 
 }
 
+async function signup(req, res) {
+    try {
+        const { email, password, name, role } = req.body;
+        const salt = await bcrypt.genSalt(saltRounds);
+        const encryptedPassword = await bcrypt.hash(password, salt);
+
+        const isEmailUnique = await checkEmailAddressUnique(email);
+        if (!isEmailUnique) {
+            return res.status(401).json(responseData("Email already exists"));
+        }
+
+        // generate new id
+        const id = Math.floor(new Date().getTime() / 1000).toString();
+        let userData = { _id: id, email: email, password: encryptedPassword, name: name, role: role };
+        const user = new Users(userData);
+        await user.save();
+        delete userData.password;
+        return res.json(responseData("Signup successful", userData))
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(responseData("Something went wrong. Please try again"));
+    }
+
+}
+
 
 async function verifyEmail(req, res) {
     const email = req.params.email;
@@ -48,8 +74,6 @@ async function verifyEmail(req, res) {
     }
     return res.json({ success: true, message: "Email is available" });
 }
-
-
 
 
 module.exports = { login, verifyEmail };
