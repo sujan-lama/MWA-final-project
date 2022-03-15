@@ -7,7 +7,7 @@ const cors = require('cors');
 const usersRoutes = require('./routes/usersRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
 const pollsRoutes = require('./routes/pollsRoutes');
-const authenticationMW = require('../middlewares/authenticationMW');
+const authenticationMW = require('./middlewares/authenticationMW');
 
 require('dotenv').config();
 
@@ -33,16 +33,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use('/api/users', usersRoutes);
 app.use('/api/protected', authenticationMW, protectedRoutes);
 app.use('/api/polls',authenticationMW,  pollsRoutes);
-
-// app.get("/", (req, res , next)=>{
-//        const newPoll = new PollsModel({
-//            _id: ObjectId(),
-//            title: "Test Poll",
-//            start_date: new Date();
-//            end_date: new Date();
-//            target_date: new Date();
-//        })
-// })
 
 app.all('*', (req, res, next) => {
     res.status(404);
