@@ -16,7 +16,7 @@ export class VoteService {
     }
     return this.http.get(`http://locahost:3000/vote/${id}`);
   }
-  vote(value: {}): Observable<any> {
-    return this.http.post(`http://localhost:3000/vote`, value);
+  vote(id?: string,value?: {}): Observable<any> {
+    return this.http.post(`http://localhost:3000/vote/${id}`, value);
   }
 }

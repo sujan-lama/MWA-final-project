@@ -5,6 +5,7 @@ export  interface FoodItems{
 }
 
 export  interface Poll{
+  _id?: string;
   category?: string;
   targetedDate?:string;
   startDateTime?:string;

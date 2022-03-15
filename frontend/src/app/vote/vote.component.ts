@@ -20,7 +20,7 @@ import {switchMap} from "rxjs";
           Ending Date Time<label>{{poll.endDateTime | date}}</label><br/>
 
           <app-form-component [required]="true" label="Food Items" [control]="form.get('food')" class="col-6">
-            <ng-select [items]="poll.foodItems!" bindLabel="name" bindName="name" formControlName="food">
+            <ng-select [items]="poll.foodItems!" bindLabel="name" bindName="name" formControlName="foodItem">
             </ng-select>
           </app-form-component>
           Ï
@@ -41,7 +41,7 @@ export class VoteComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private router: Router, private service: VoteService, private activatedRoute: ActivatedRoute) {
     this.form = this.fb.group({
-      food: [null, [Validators.required]]
+      foodItem: [null, [Validators.required]]
     });
   }
 
@@ -66,7 +66,7 @@ export class VoteComponent implements OnInit {
       return;
     }
 
-    this.service.vote(this.form.value).subscribe(res => {
+    this.service.vote(this.poll._id, this.form.value).subscribe(res => {
       console.log('success');
       this.goBack();
     }, (error => {
