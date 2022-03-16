@@ -18,7 +18,7 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-    "email":"admin@admin.com",
+    "email":"user@user.com",
     "password":"password"
 }
 
@@ -35,10 +35,15 @@ Authorization: Bearer
 
 ### GET polls
 GET http://localhost:3000/api/polls
-#Authorization: Bearer
+Authorization: Bearer 1cKVM9n-22iCaO5BcmnnIRDY9Vg8nEL1uJ8dFK7zKvc
+
+### get user voted polls
+GET http://localhost:3000/api/polls/user
+Authorization: Bearer 
 
 ### save poll
 POST http://localhost:3000/api/polls
+Authorization: Bearer 
 Content-Type: application/json
 
 {
@@ -58,11 +63,6 @@ Content-Type: application/json
           "email":"admin@gmail.com",
           "name":"Admin",
           "role":"admin"
-        },
-        {
-          "email":"user@gmail.com",
-          "name":"User",
-          "role":"user"
         }
       ]
     },
@@ -86,13 +86,13 @@ Content-Type: application/json
 GET http://localhost:3000/api/polls/6230b76ee3b889ee669b7b44
 
 ### Vote for a food
-PUT http://localhost:3000/api/polls/622feb4b8d813d8b44888c38
+PUT http://localhost:3000/api/polls/623164de7974a3a94e2e7149
+Authorization: Bearer 
 Content-Type: application/json
 
 {
-  "food_id": "622feb4b8d813d8b44888c39",
-  "user_id": "622fe35408e000383f74c5d6"
-}
+  "food_id": "6231529d91dc7abf2eb53bfc"
+  }
 
 ### remove poll
 DELETE  http://localhost:3000/api/polls/622febbea6812511fc5cc2d5

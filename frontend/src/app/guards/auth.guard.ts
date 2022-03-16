@@ -37,14 +37,6 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(['/login']);
       return false;
     }
-    const role = user.role;
-
-    if (route.data['role'] && route.data['role'].indexOf(role) === -1) {
-      this.toastr.error('Access Denied');
-      this.tokenStorage.clear();
-      return false;
-    }
-
     return true;
   }
 
