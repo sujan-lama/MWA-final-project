@@ -56,7 +56,7 @@ const save = async (req, res) => {
 
     //4. return appropriate response/errs
     const range = `${parsed_start_date.format("dddd, MMMM Do YYYY, h:mm:ss a")} and ${parsed_end_date.format("dddd, MMMM Do YYYY, h:mm:ss a")}`
-    res.json(responseData(`A poll successfully created between ${range}`, null));
+    res.json(responseData(`A poll successfully created between ${range}`, poll));
 
 }
 

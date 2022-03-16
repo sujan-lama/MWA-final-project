@@ -25,10 +25,12 @@
         </ng-select>
       </app-form-component>
       <app-form-component [required]="true" label="Start Date/Time" [control]="form.get('startDateTime')" class="col-6">
-        <input type="datetime-local" formControlName="startDateTime" class="form-control" [min]="todayWithTime">
+        <input type="datetime-local" formControlName="startDateTime" class="form-control" [min]="todayWithTime"
+               [max]="targetedDate">
       </app-form-component>
       <app-form-component [required]="true" label="End Date/Time" [control]="form.get('endDateTime')" class="col-6">
-        <input type="datetime-local" formControlName="endDateTime" class="form-control" [min]="tomorrowWithTime">
+        <input type="datetime-local" formControlName="endDateTime" class="form-control" [min]="tomorrowWithTime"
+               [max]="targetedDate">
       </app-form-component>
 
       <div class="form-group" class="col-12">

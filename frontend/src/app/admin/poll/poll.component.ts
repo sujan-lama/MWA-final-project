@@ -14,6 +14,7 @@ import {ToastrService} from "ngx-toastr";
 })
 export class PollComponent implements OnInit {
 
+  targetedDate: string = ""
   public form = this.fb.group({
     title: [null, [Validators.required]],
     category: [null, [Validators.required]],
@@ -33,6 +34,10 @@ export class PollComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.form.get("targetedDate")?.valueChanges.subscribe(v => {
+      this.targetedDate = moment(v).format('YYYY-MM-DDT23:59:59');
+    });
+
   }
 
   addPole() {
@@ -61,6 +66,9 @@ export class PollComponent implements OnInit {
       .subscribe(res => {
         this.toastr.clear();
         this.toastr.success(res.message);
+        this.foodItems = [];
+        this.form.setControl('foodItems', this.fb.array([]));
+        this.form.reset();
       }, (err) => {
         this.toastr.error(err.error.message)
       });
@@ -102,7 +110,7 @@ export class PollComponent implements OnInit {
   }
 
   pollDateValidator(formGoup: FormGroup) {
-    const targetDate = formGoup.get('targetedDate')?.value;
+    let targetDate = formGoup.get('targetedDate')?.value;
     const startDateTime = formGoup.get('startDateTime')?.value;
     const endDateTime = formGoup.get('endDateTime')?.value;
     if (targetDate) {
@@ -116,26 +124,22 @@ export class PollComponent implements OnInit {
     if (startDateTime) {
       const startDateTimeEl = formGoup.get('startDateTime');
       startDateTimeEl?.setErrors(null);
-      const days = convertToDay(Date.parse(targetDate) - Date.parse(startDateTime));
-      if (days <= 0) {
+      if (moment(targetDate).isBefore(moment(startDateTime))) {
         startDateTimeEl?.setErrors({'date': 'Start Date/Time must be before targetted day'});
       }
 
-      const days1 = convertToDay(Date.parse(startDateTime) - Date.now());
-      if (days1 <= 0) {
+      if (moment(startDateTime).isBefore(moment(), "days")) {
         startDateTimeEl?.setErrors({'date': 'Start Date/Time must be after today.'});
       }
     }
     if (endDateTime) {
       const endDateTimeEl = formGoup.get('endDateTime');
       endDateTimeEl?.setErrors(null);
-      const days = convertToDay(Date.parse(startDateTime) - Date.parse(endDateTime));
-      if (days < 0) {
+      if (moment(endDateTime).isBefore(moment(startDateTime))) {
         endDateTimeEl?.setErrors({'date': 'End Date/Time must be after start date/time.'});
       }
 
-      const days1 = convertToDay(Date.parse(targetDate) - Date.parse(endDateTime));
-      if (days1 < 0) {
+      if (moment(endDateTime).isAfter(moment(targetDate), "days")) {
         endDateTimeEl?.setErrors({'date': 'End Date/Time must be before targeted date/time.'});
       }
     }
