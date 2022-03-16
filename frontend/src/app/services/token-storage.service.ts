@@ -37,6 +37,8 @@ export class TokenStorageService {
   }
 
   clear() {
+    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(TOKEN_KEY);
     localStorage.clear();
     this.isLoggedInEmitter.emit(false);
   }

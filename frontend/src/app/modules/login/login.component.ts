@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import Response from '../../models/response';
 import {map} from 'rxjs';
-import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {AuthenticationService} from '../../services/authentication.service';
 import {TokenStorageService} from '../../services/token-storage.service';

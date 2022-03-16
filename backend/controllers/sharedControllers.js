@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const fs = require("fs");
 const saltRounds = 10;
-const Users = require("../models/users");
+const { Users } = require("../models/users");
 
 async function saveUser(body) {
     const { email, password, name, role } = body;
@@ -9,9 +9,7 @@ async function saveUser(body) {
     const salt = await bcrypt.genSalt(saltRounds);
     const encryptedPassword = await bcrypt.hash(password, salt);
 
-    // generate new id
-    const id = Date.now();
-    let userData = { _id: id, email: email, password: encryptedPassword, name: name, role: role };
+    let userData = { email: email, password: encryptedPassword, name: name, role: role };
     const user = new Users(userData);
     await user.save();
     delete userData.password;

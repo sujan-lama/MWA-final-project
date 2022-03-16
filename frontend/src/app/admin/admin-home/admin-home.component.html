@@ -1,10 +1,12 @@
+<app-admin-nav></app-admin-nav>
+
 <div style="padding:16px">
-  <div>
-    <button (click)="addUser()">Add user</button>
+  <div style="float:right">
+    <button mat-raised-button (click)="addUser()">Add user</button>
   </div>
   <br>
   <ag-grid-angular
-    style="height: 500px;"
+    style="height: 500px; clear:both;margin-top: 24px"
     class="ag-theme-alpine"
     [modules]="modules"
     [columnDefs]="columnDefs"
