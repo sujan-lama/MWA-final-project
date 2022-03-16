@@ -53,21 +53,23 @@ export class PollComponent implements OnInit {
       return;
     }
     const poll = this.form.value;
+    const foods = []
+    for (let food of poll.foodItems) {
+      foods.push({foodItem: food});
+    }
     const body = {
       title: poll.title,
       start_date: poll.startDateTime,
       end_date: poll.endDateTime,
       targeted_date: poll.targetedDate,
       category: poll.category,
-      foods: poll.foodItems
+      foods: foods
     }
-    console.log(body)
     this.service.createPoll(body).pipe(map(v => v as Response))
       .subscribe(res => {
         this.toastr.clear();
         this.toastr.success(res.message);
         this.foodItems = [];
-        this.form.setControl('foodItems', this.fb.array([]));
         this.form.reset();
       }, (err) => {
         this.toastr.error(err.error.message)

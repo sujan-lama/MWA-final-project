@@ -3,10 +3,10 @@ POST  http://localhost:3000/api/users/signup
 Content-Type: application/json
 
 {
-    "email":"sujan@gmail.com",
-    "password":"password",
-    "name":"Sujan Lama",
-    "role":"Admin"
+    "email":"admin@admin.com",
+    "password":"admin",
+    "name":"admin",
+    "role":"ADMIN"
 }
 
 ### delete user
@@ -83,7 +83,8 @@ Content-Type: application/json
 }
 
 ### GET poll by Id
-GET http://localhost:3000/api/polls
+GET http://localhost:3000/api/polls/6230b76ee3b889ee669b7b44
+
 ### Vote for a food
 PUT http://localhost:3000/api/polls/622feb4b8d813d8b44888c38
 Content-Type: application/json

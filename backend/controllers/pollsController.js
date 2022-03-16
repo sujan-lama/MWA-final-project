@@ -6,7 +6,6 @@ const { Foods } = require("../models/foods");
 const { Users } = require("../models/users");
 const mongoose = require('mongoose');
 
-
 const findAll = (req, res) => {
     Polls.find({}, (err, docs) => {
         if (err)
@@ -38,10 +37,6 @@ const save = async (req, res) => {
 
     if (!check.success) return res.status(400).json(check);
 
-    const foodsWithVotes = [];
-    JSON.parse(JSON.stringify(foods)).forEach(element => {
-        foodsWithVotes.push({ foodItem: element, votes: [] });
-    });
 
     // 3. Persist to db
     const poll = new Polls({
@@ -50,7 +45,7 @@ const save = async (req, res) => {
         start_date: parsed_start_date,
         end_date: parsed_end_date,
         target_date: parsed_target_date,
-        foods: foodsWithVotes
+        foods: foods
     });
     await poll.save();
 
@@ -87,6 +82,7 @@ const getVoteResults = async (req, res) => {
 
     let id = mongoose.Types.ObjectId(req.params.id);
     const match = { $match: { "_id": id } }
+
     const unwind = { $unwind: "$foods" }
     const project = { $project: { "_id": 1, title: 1, voteCounts: { $size: "$foods.votes" }, foods: 1 } }
     const sort = { $sort: { voteCounts: -1 } }

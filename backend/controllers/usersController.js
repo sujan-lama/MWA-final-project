@@ -51,8 +51,8 @@ async function signup(req, res) {
         }
 
         // generate new id
-        const id = Math.floor(new Date().getTime() / 1000).toString();
-        let userData = { _id: id, email: email, password: encryptedPassword, name: name, role: role };
+       //const id = Math.floor(new Date().getTime() / 1000).toString();
+        let userData = { email: email, password: encryptedPassword, name: name, role: role };
         const user = new Users(userData);
         await user.save();
         delete userData.password;

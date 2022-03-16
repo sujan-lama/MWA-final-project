@@ -6,6 +6,9 @@ import {ToastrService} from 'ngx-toastr';
 import {AuthenticationService} from '../../services/authentication.service';
 import {TokenStorageService} from '../../services/token-storage.service';
 import {RoutingService} from "../../services/routing.service";
+import {userStore} from "../../store/store";
+import {saveUser} from "../../store/actions";
+import {DEFAULT_STORAGE, STORAGE} from "../../globalConstants";
 
 @Component({
   selector: 'app-login',
@@ -14,13 +17,13 @@ import {RoutingService} from "../../services/routing.service";
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-
   constructor(
     formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
     private tokenStorage: TokenStorageService,
     private routingService: RoutingService,
     private toastr: ToastrService
+
   ) {
     this
       .loginForm = formBuilder.group({
@@ -36,7 +39,6 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.compose([Validators.required])],
     });
   }
-
   onSubmit() {
     this.authenticationService
       .login(this.loginForm.value)
@@ -46,8 +48,7 @@ export class LoginComponent implements OnInit {
             this.toastr.error(v.message);
             return;
           }
-          this.tokenStorage.saveToken(v.data.token);
-          this.tokenStorage.saveUser(v.data);
+          this.saveState(v);
           this.toastr.clear();
           this.toastr.success(v.message);
           this.routingService.loginSuccessRoute();
@@ -60,5 +61,16 @@ export class LoginComponent implements OnInit {
   ngOnInit()
     :
     void {
+  }
+  saveState(value: any){
+    if(DEFAULT_STORAGE == STORAGE.GLOBAL_STATE) this.viaGlobalState(value);
+    else this.viaLocalStorage(value);
+  }
+  viaLocalStorage(v: any){
+    this.tokenStorage.saveToken(v.data.token);
+    this.tokenStorage.saveUser(v.data);
+  }
+  viaGlobalState(v: any){
+    userStore.dispatch(saveUser(v.data))
   }
 }

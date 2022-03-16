@@ -11,6 +11,7 @@ async function saveUser(body) {
 
     let userData = { email: email, password: encryptedPassword, name: name, role: role };
     const user = new Users(userData);
+    console.log(user)
     await user.save();
     delete userData.password;
     return userData;
@@ -37,9 +38,8 @@ async function generateUser() {
 
 async function checkEmailAddressUnique(email) {
     const userDetail = await Users.findOne({ email: email });
-    if (userDetail)
-        return false;
-    return true;
+    return !userDetail;
+
 }
 
 module.exports = { saveUser, generateUser, checkEmailAddressUnique }

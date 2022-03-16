@@ -11,5 +11,7 @@ router.delete("/:id", pollController.deleteById);
 
 router.get("/:id/results", pollController.getVoteResults)
 
+router.get("/:id/results", pollController.getVoteResults)
+
 module.exports = router;
 
