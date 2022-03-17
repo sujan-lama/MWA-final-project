@@ -5,9 +5,39 @@ const { Polls } = require("../models/polls");
 const { Foods } = require("../models/foods");
 const { Users } = require("../models/users");
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+
+const getEmailFromToken = (req) => {
+    const authHeader = String(req.headers['authorization'] || '');
+    const token = authHeader.substring(7, authHeader.length);
+
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    const email = decoded.email;
+    return email;
+}
 
 const findAll = (req, res) => {
-    Polls.find({}, (err, docs) => {
+
+    const email = getEmailFromToken(req);
+
+    
+    Polls.find({
+        "foods.votes.email": { $ne: email }
+    }, (err, docs) => {
+        if (err)
+            return res.status(500).json(responseData("Somthing wrong happened , Please try again : " + err))
+        res.json(responseData(null, docs))
+    });
+}
+
+const findAllVotedByUser = (req, res) => {
+
+    const email = getEmailFromToken(req);
+
+
+    Polls.find({
+        "foods.votes.email": email
+    }, (err, docs) => {
         if (err)
             return res.status(500).json(responseData("Somthing wrong happened , Please try again : " + err))
         res.json(responseData(null, docs))
@@ -58,11 +88,13 @@ const save = async (req, res) => {
 const update = async (req, res) => {
 
     const poll_id = req.params.id;
-    const { food_id, user_id } = req.body;
-    const user = await Users.findById({ _id: user_id });
+    const { food_id } = req.body;
+    const user_email = getEmailFromToken(req);
+    const user = await Users.findOne({ email: user_email }, 'name email role');
 
-    Polls.updateOne({ _id: poll_id, "foods._id": food_id },
-        { $push: { "foods.$.votes": user } },
+
+    Polls.updateOne({ _id: poll_id, "foods.foodItem._id": food_id },
+        { $addToSet: { "foods.$.votes": user } },
         ((error, doc) => {
             if (error) return res.status(500).json(responseData("An Error haappened while trying to update a poll" + error))
             res.json(responseData(null, doc))
@@ -94,6 +126,6 @@ const getVoteResults = async (req, res) => {
     }));
 }
 
-const pollController = { findAll, findById, save, update, deleteById, getVoteResults };
+const pollController = { findAll, findById, save, update, deleteById, getVoteResults, findAllVotedByUser };
 
 module.exports = { "pollController": pollController };

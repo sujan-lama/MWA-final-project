@@ -4,6 +4,7 @@ const { pollController } = require('../controllers/pollsController');
 
 
 router.get("/", pollController.findAll);
+router.get("/user", pollController.findAllVotedByUser);
 router.post("/", pollController.save);
 router.get("/:id", pollController.findById);
 router.put("/:id", pollController.update); // vote

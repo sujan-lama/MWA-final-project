@@ -13,9 +13,8 @@ import {PollService} from "../services/poll.service";
 import {AdminService} from "../services/admin.service";
 import {PollComponent} from "./poll/poll.component";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {FormComponent} from "./form-component/form.component";
-import {NavComponent} from "../user/nav/nav.component";
 import {AdminNavComponent} from "./admin-nav/admin-nav.component";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -24,7 +23,6 @@ import {AdminNavComponent} from "./admin-nav/admin-nav.component";
     AddUserComponent,
     UserdialogComponent,
     PollComponent,
-    FormComponent,
     AdminNavComponent
   ],
   imports: [
@@ -34,7 +32,9 @@ import {AdminNavComponent} from "./admin-nav/admin-nav.component";
     AgGridModule,
     MatButtonModule,
     MatDialogModule,
-    NgSelectModule
+    NgSelectModule,
+    SharedModule
+
   ],
   exports: [
     AdminNavComponent
