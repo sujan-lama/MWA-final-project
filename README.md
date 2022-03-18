@@ -1,4 +1,4 @@
-# MWA-final-project - Food Voting System
+# MWA-final-project - Food Recommendation System
 
 Description:
 	Food voting system, where admin can ask users what to cook. And based on the vote of users, the admin can decide what to cook.
